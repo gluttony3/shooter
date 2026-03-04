@@ -46,17 +46,22 @@ jobs:
           buildozer android debug 2>&1 | tee build.log
           grep -i "gradle\|error\|exception" build.log | grep -v "ENVIRONMENT" | tail -30
 
-      - name: Find APK
+      - name: Find and collect APK
         run: |
-          find /home/runner -name "*.apk" 2>/dev/null
+          echo "=== Searching for APK ==="
           find . -name "*.apk" 2>/dev/null
-          echo "=== bin directory ==="
-          ls -la bin/ 2>/dev/null || echo "bin/ not found"
-          echo "=== buildozer directory ==="
-          find .buildozer -name "*.apk" 2>/dev/null
+          APK=$(find . -name "*.apk" 2>/dev/null | head -1)
+          if [ -z "$APK" ]; then
+            echo "ERROR: No APK found!"
+            exit 1
+          fi
+          echo "Found APK: $APK"
+          mkdir -p artifacts
+          cp "$APK" artifacts/
+          ls -la artifacts/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: space-shooter-apk
-          path: bin/*.apk
+          path: artifacts/*.apk
