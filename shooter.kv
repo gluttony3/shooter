@@ -1,0 +1,66 @@
+<MainScreen>:
+    MDFloatLayout:
+        md_bg_color: 0.1, 0.1, 0.1, 1
+
+        MDLabel:
+            text: "SPACE SHOOTER"
+            halign: "center"
+            font_style: "H3"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1   # білий текст
+            pos_hint: {"center_x": .5, "center_y": .7}
+
+        MDRaisedButton:
+            text: "PLAY"
+            font_size: "32sp"
+            size_hint: None, None
+            size: dp(200), dp(80)          
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            on_release: app.start_game()
+
+
+<GameScreen>:
+    name: "game"
+    FloatLayout:
+        FloatLayout:
+            id: game_field
+            size_hint: 1, 1
+            canvas.before:
+                Color:
+                    rgba: 0.07, 0.07, 0.07, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        MDLabel:
+            id: hp_label
+            text: "HP: 2"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "left"
+            size_hint_x: 0.33
+            pos_hint: {"x": 0.02, "top": 0.98}
+
+        MDLabel:
+            id: score_label
+            text: "Score: 0"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            halign: "right"
+            size_hint_x: 0.4
+            pos_hint: {"right": 1.0, "top": 0.98}
+
+        VirtualJoystick:
+            id: joystick
+            size_hint: None, None
+            size: dp(130), dp(130)
+            pos_hint: {"x": 0.05, "y": 0.08}
+
+        MDRaisedButton:
+            text: "FIRE"
+            font_size: "28sp"
+            size_hint: None, None
+            size: dp(150), dp(70)
+            pos_hint: {"right": 0.95, "y": 0.05}
+            on_press: root.shooting = True
+            on_release: root.shooting = False
